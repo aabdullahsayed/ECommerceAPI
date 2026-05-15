@@ -1,5 +1,6 @@
 ﻿using ECommerceAPI.Models;
 using ECommerceAPI.Repositories;
+using BCrypt.Net;
 
 namespace ECommerceAPI.Services;
 
@@ -14,6 +15,8 @@ public class UserService:IUserService
     
     public User RegisterUser(User user)
     {
-         return _repository.Register(user);
+        user.Password = BCrypt.Net.BCrypt.HashPassword(user.Password);
+        var userrepo = _repository.Register(user);
+        return userrepo;
     }
 }
